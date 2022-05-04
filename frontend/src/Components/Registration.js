@@ -14,25 +14,40 @@ function Registartion(){
             ...form,
             [field]: value
         })
-        // Check and see if errors exist, and remove them from the error object:
         if ( !!errors[field] ) setErrors({
             ...errors,
             [field]: null
         })
     }
 
-    const handleSubmit = e => {
+    let navigate = useNavigate();
+
+    const handleSubmit = async e => {
         e.preventDefault()
-        // get our new errors
         const newErrors = findFormErrors()
-        // Conditional logic:
-        if ( Object.keys(newErrors).length > 0 ) {
-            // We got errors!
+        if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors)
         } else {
-            // No errors! Put any logic here for the form submission!
-            console.log(form)
-            alert('Thank you for your feedback!')
+            try {
+                const body = {
+                    password: form.password,
+                    firstName: form.firstName,
+                    middleName: form.middleName,
+                    lastName: form.lastName,
+                    age: form.age,
+                    phone: form.phone,
+                    email: form.email,
+                    city: form.city,
+                    telegram: true,
+                    viber: true,
+                    whatsApp:true
+                };
+                console.log(body)
+                await axios.post("/api/auth/registration", body);
+                navigate("/login")
+            } catch (err) {
+                console.error(err.message);
+            }
         }
     }
 
@@ -40,33 +55,41 @@ function Registartion(){
         const {  email, password, passwordConfirm, firstName, lastName, middleName, age, phone, city   } = form
         const newErrors = {}
         if ( !email || email === '' ) newErrors.email = 'Пожалуйста заполните данное поле'
-        else if ( !validator.isEmail(email) ) newErrors.email = 'Пожалуйста заполните данное поле'
-        if ( !passwordConfirm || passwordConfirm === '' || passwordConfirm.length > 6) newErrors.passwordConfirm = 'select a food!'
-        if ( !age || age > 8 || age < 150 ) newErrors.rating = 'must assign a rating between 1 and 5!'
-
+        else if ( !validator.isEmail(email) ) newErrors.email = 'Адрес должен содержать специальный символ "@"'
+        if ( !passwordConfirm || passwordConfirm === '' || passwordConfirm.length <= 6) newErrors.passwordConfirm = 'Пароль должен быть больше 6 символов'
+        else if (passwordConfirm !== password) newErrors.passwordConfirm = 'Пароли не совпадают'
+        if ( !password || password === '' || password.length <= 6) newErrors.password = 'Пароль должен быть больше 6 символов'
+        if ( !age || age === ''|| age < 8 || age > 150 ) newErrors.age = 'Пожалуйста заполните данное поле'
+        if (!firstName || firstName === '') newErrors.firstName = 'Пожалуйста заполните данное поле'
+        if (!middleName || middleName === '') newErrors.middleName = 'Пожалуйста заполните данное поле'
+        if (!lastName || lastName === '') newErrors.lastName = 'Пожалуйста заполните данное поле'
+        if (!city || city === '') newErrors.city = 'Пожалуйста заполните данное поле'
+        if (!phone || phone === '') newErrors.phone = 'Пожалуйста заполните данное поле'
         return newErrors
     }
 
     return (
-    <Container style={{marginTop: '50px'}}>
+    <Container style={{marginTop: '20px'}}>
         <Row className="justify-content-center" md="auto" xs="auto" xl="auto">
             <Col md="auto" xs="auto">
                 <div  className="login">
-                    <Stack gap={3} >
-                        <h1 className="text-center mt-5">Создайте аккаунт</h1>
-                        <Form className="mt-5" onSubmit={handleSubmit} >
-                            <Stack gap={3}>
-                                <Row className="mb-3">
+                    <Stack gap={1} >
+                        <h1 className="text-center mt-1">Создайте аккаунт</h1>
+                        <Form className="mt-1" onSubmit={handleSubmit} noValidate >
+                            <Stack gap={1}>
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Почта</Form.Label>
                                         <Form.Control type="email"
                                                       placeholder="Введите вашу почту"
                                                       isInvalid={errors.email }
-                                                      onChange={ e => setField('email', e.target.value) } />
+                                                      onChange={ e => {
+                                                          setField('email', e.target.value)
+                                                      } } />
                                         <Form.Control.Feedback type='invalid'>{ errors.email }</Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                <Row className="mb-3">
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Пароль</Form.Label>
                                         <Form.Control type="password"
@@ -87,7 +110,7 @@ function Registartion(){
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                <Row className="mb-3">
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Имя</Form.Label>
                                         <Form.Control type="text"
@@ -99,7 +122,7 @@ function Registartion(){
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                <Row className="mb-3">
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Фамилия</Form.Label>
                                         <Form.Control type="text"
@@ -122,7 +145,7 @@ function Registartion(){
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                <Row className="mb-3">
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Возраст</Form.Label>
                                         <Form.Control type="number"
@@ -134,7 +157,7 @@ function Registartion(){
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                <Row className="mb-3">
+                                <Row className="mb-2">
                                     <Form.Group as={Col} controlId="formGridEmail">
                                         <Form.Label >Номер телефона</Form.Label>
                                         <Form.Control type="number"

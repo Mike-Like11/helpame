@@ -10,13 +10,12 @@ public class RegistrationInput {
     private String firstName;
     private String middleName;
     private String lastName;
-    private Date dateOfBirth;
-    private String country;
-    private String town;
+    private String city;
     private String phone;
     private boolean telegram;
     private boolean whatsApp;
     private boolean viber;
-    private String mail;
+    private int age;
+    private String email;
     private String password;
 }

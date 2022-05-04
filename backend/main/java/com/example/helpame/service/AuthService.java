@@ -46,7 +46,7 @@ public class AuthService implements UserDetailsService {
             }
         }
         else{
-            return new ResponseEntity("", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Неправильный ввод данных", HttpStatus.NOT_FOUND);
         }
         return null;
     }
