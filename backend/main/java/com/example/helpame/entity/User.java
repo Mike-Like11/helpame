@@ -24,30 +24,10 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String firstName,
-                String middleName,
-                String lastName,
-                Date dateOfBirth,
-                String country,
-                String town,
-                String phone,
-                boolean telegram,
-                boolean whatsApp,
-                boolean viber,
+    public User(UserInfo userInfo,
                 String email,
                 String password) {
-        this.userInfo = new UserInfo(
-                firstName,
-                middleName,
-                lastName,
-                dateOfBirth,
-                country,
-                town,
-                phone,
-                telegram,
-                whatsApp,
-                viber
-        );
+        this.userInfo = userInfo;
         this.email = email;
         this.password = password;
         roles = new ArrayList<>();

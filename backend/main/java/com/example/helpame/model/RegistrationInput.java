@@ -2,6 +2,7 @@ package com.example.helpame.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 @Data
@@ -18,4 +19,5 @@ public class RegistrationInput {
     private int age;
     private String email;
     private String password;
+    private MultipartFile avatar;
 }

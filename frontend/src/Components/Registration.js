@@ -40,11 +40,20 @@ function Registartion(){
                     city: form.city,
                     telegram: true,
                     viber: true,
-                    whatsApp:true
+                    whatsApp:true,
+                    avatar: form.avatar
                 };
-                console.log(body)
-                await axios.post("/api/auth/registration", body);
-                navigate("/login")
+                console.log({
+                    userInfo: body,
+                    avatar: form.avatar
+                })
+                await axios.post("http://localhost:8080/api/auth/register",
+                    body,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                    });
+                //navigate("/login")
             } catch (err) {
                 console.error(err.message);
             }
@@ -180,25 +189,25 @@ function Registartion(){
                                         </Form.Control.Feedback>
                                     </Form.Group>
                                 </Row>
-                                {/*<Row className="mb-3">*/}
-                                {/*    <Form.Group controlId="formFile" className="mb-3">*/}
-                                {/*        <Form.Label>Ваше изображение</Form.Label>*/}
-                                {/*        <Form.Control type="file"*/}
-                                {/*                      accept="image/*"*/}
-                                {/*            //value={avatar}*/}
-                                {/*                      onChange={e => setAvatar(e.target.files[0])}*/}
-                                {/*                      required*/}
-                                {/*        />*/}
-                                {/*    </Form.Group>*/}
-                                {/*</Row>*/}
-                                {/*{avatar && (*/}
-                                {/*    <div>*/}
-                                {/*        <img*/}
-                                {/*            src={URL.createObjectURL(avatar)}*/}
-                                {/*            alt="Thumb"*/}
-                                {/*        />*/}
-                                {/*    </div>*/}
-                                {/*)}*/}
+                                <Row className="mb-3">
+                                    <Form.Group controlId="formFile" className="mb-3">
+                                        <Form.Label>Ваше изображение</Form.Label>
+                                        <Form.Control type="file"
+                                                      accept="image/*"
+                                            //value={avatar}
+                                                      onChange={e => setField('avatar', e.target.files[0]) }
+                                                      required
+                                        />
+                                    </Form.Group>
+                                </Row>
+                                {form.avatar && (
+                                    <div>
+                                        <img
+                                            src={URL.createObjectURL(form.avatar)}
+                                            alt="Thumb"
+                                        />
+                                    </div>
+                                )}
                                 <Button className="btn btn-success"  type="submit">Создать аккаунт</Button>
                             </Stack>
                         </Form>

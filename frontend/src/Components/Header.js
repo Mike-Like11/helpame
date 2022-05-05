@@ -56,7 +56,7 @@ function Header(){
                                         }
                                         : { color: '#fed053'}}
                                 ><h5>Личный кабинет</h5></Nav.Link>
-                                <Nav.Link as={NavLink} className="navLink" to="/logout" style={({ isActive }) =>
+                                <Nav.Link as={NavLink} className="navLink" onClick={()=>{localStorage.clear();}} to="/login" style={({ isActive }) =>
                                     isActive
                                         ? {
                                             color: '#fff',

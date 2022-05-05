@@ -10,11 +10,11 @@ public class UserInfo {
     private String firstName;
     private String middleName;
     private String lastName;
-    private Date dateOfBirth;
-    private String country;
-    private String town;
+    private int age;
     private String phone;
+    private String city;
     private boolean telegram;
     private boolean whatsApp;
     private boolean viber;
+    private String avatarUrl;
 }

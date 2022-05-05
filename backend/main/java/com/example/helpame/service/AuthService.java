@@ -3,6 +3,7 @@ package com.example.helpame.service;
 
 import com.example.helpame.config.JWTUtil;
 import com.example.helpame.entity.User;
+import com.example.helpame.entity.UserInfo;
 import com.example.helpame.model.LoginInput;
 import com.example.helpame.model.RegistrationInput;
 import com.example.helpame.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -25,6 +27,9 @@ public class AuthService implements UserDetailsService {
     @Autowired
     public UserRepository userRepository;
     @Autowired private JWTUtil jwtUtil;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -32,7 +37,8 @@ public class AuthService implements UserDetailsService {
     }
 
     public User register(RegistrationInput user){
-        User user2 = new User(user.getFirstName(),user.getMiddleName(),user.getLastName(),user.getDateOfBirth(),user.getCountry(),user.getTown(),user.getPhone(),user.isTelegram(),user.isWhatsApp(),user.isViber(),user.getMail(),user.getPassword());
+        UserInfo userInfo = new UserInfo(user.getFirstName(),user.getMiddleName(),user.getLastName(),user.getAge(),user.getPhone(), user.getCity(), user.isViber(),user.isTelegram(),user.isWhatsApp(),cloudinaryService.uploadFile(user.getAvatar()));
+        User user2 = new User(userInfo, user.getEmail(), user.getPassword());
         String cryptedPassword = bCryptPasswordEncoder.encode(user2.getPassword());
         user2.setPassword(cryptedPassword);
         return userRepository.save(user2);
