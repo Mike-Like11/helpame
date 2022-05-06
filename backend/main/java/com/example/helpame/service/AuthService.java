@@ -50,10 +50,12 @@ public class AuthService implements UserDetailsService {
                 String token = jwtUtil.generateToken(loginInput.getEmail());
                 return new ResponseEntity(token, HttpStatus.OK);
             }
+            else{
+                return new ResponseEntity("Неправильный ввод данных", HttpStatus.NOT_FOUND);
+            }
         }
         else{
             return new ResponseEntity("Неправильный ввод данных", HttpStatus.NOT_FOUND);
         }
-        return null;
     }
 }

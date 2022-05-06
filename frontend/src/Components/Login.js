@@ -39,20 +39,17 @@ const Login = () => {
                     email: body.username,
                     password: body.password
                 }).then(response => {
-                    console.log(response)
-                    if (response.data === "Неправильный ввод данных"){
-                        const {  email, password   } = form
-                        const newErrors = {}
-                        newErrors.login = response.data
-                        setErrors(newErrors)
-                    }
-                    else {
+                    console.log(response);
                         localStorage.setItem("user", JSON.stringify(response.data));
-                        navigate("/profile")
-                    }
+                        //navigate("/profile")
                 })
             } catch (err) {
-                console.error(err.message);
+                if (err.response.data === "Неправильный ввод данных"){
+                    const {  email, password   } = form
+                    const newErrors = {}
+                    newErrors.login = err.response.data
+                    setErrors(newErrors)
+                }
             }
         }
     };
@@ -61,10 +58,11 @@ const Login = () => {
             <Row className="align-items-center justify-content-center" md="auto" xs="auto" xl="auto">
                 <Col md="auto" xs="auto">
                     <div  className="login">
-                        <Stack gap={3} className="mx-auto">
-                            <h1 className="text-center mt-5" style={{color:"#2A2E34"}}>Войдите в систему</h1>
-                            <Form className="mt-5" onSubmit={onSubmitLogin} noValidate >
-                                <Stack gap={3}>
+                        <Stack gap={1} className="mx-auto">
+                            <h1 className="text-center mt-2" style={{color:"#2A2E34"}}>Войдите в систему</h1>
+                            <h5 className="text-center mt-2" style={{color:'red'}}>{errors.login}</h5>
+                            <Form className="mt-1" onSubmit={onSubmitLogin} noValidate >
+                                <Stack gap={1}>
                                     <Row className="mb-3">
                                         <Form.Group as={Col} controlId="formGridEmail">
                                             <Form.Label >Почта</Form.Label>
