@@ -41,7 +41,7 @@ const Login = () => {
                 }).then(response => {
                     console.log(response);
                         localStorage.setItem("user", JSON.stringify(response.data));
-                        //navigate("/profile")
+                        navigate("/profile")
                 })
             } catch (err) {
                 if (err.response.data === "Неправильный ввод данных"){

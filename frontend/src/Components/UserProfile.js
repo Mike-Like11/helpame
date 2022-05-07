@@ -253,6 +253,7 @@ function UpdateModalUser(props) {
 const UserProfile = () => {
     const [user, setUser] = useState("");
     const [modalShow, setModalShow] = React.useState(false);
+    const navigate = useNavigate();
     const getUser = async () => {
         console.log("dasdsadasd");
         try {
@@ -286,7 +287,7 @@ const UserProfile = () => {
                                         <Button variant="info" style={{height: "100%"}}>Создать резюме</Button>
                                     </Col>
                                     <Col>
-                                    <Button variant="dark">Создать задание</Button>
+                                    <Button variant="dark" onClick={() => navigate("/new_task")}>Создать задание</Button>
                                      </Col>
                                 </Row>
                                 <Button variant="danger">Выйти</Button>
