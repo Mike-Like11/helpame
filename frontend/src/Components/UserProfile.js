@@ -10,14 +10,14 @@ import {
     FormControl, Image,
     InputGroup,
     Modal,
-    Row, Stack
+    Row, Spinner, Stack
 } from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
+import AddReview from "./AddReview";
 function UpdateModalUser(props) {
     const [ form, setForm ] = useState({})
     const [ errors, setErrors ] = useState({})
-
     const setField = (field, value) => {
         setForm({
             ...form,
@@ -253,6 +253,7 @@ function UpdateModalUser(props) {
 const UserProfile = () => {
     const [user, setUser] = useState("");
     const [modalShow, setModalShow] = React.useState(false);
+    const [ loading, setLoading] = useState(true)
     const navigate = useNavigate();
     const getUser = async () => {
         console.log("dasdsadasd");
@@ -265,6 +266,7 @@ const UserProfile = () => {
                 }}).then((response) => {
                     console.log(response.data);
                 setUser(response.data.userInfo);
+                setLoading(false)
             })
         } catch (err) {
             console.log("dasdsadasd");
@@ -279,7 +281,7 @@ const UserProfile = () => {
             <Row  className="mb-3 mt-3">
                 <Col>
                     <Card className="d-flex flex-column align-items-center text-center login">
-                        <Image src={user.avatarUrl} roundedCircle width={300} height={300}/>
+                        {loading ? <Spinner animation="border" style={{ width: '300', height: '300' }}/> :  <Image src={user.avatarUrl} roundedCircle width={300} height={300}/>}
                         <Card.Body>
                             <Stack gap={1}>
                                 <Row>
@@ -295,45 +297,53 @@ const UserProfile = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col  className="login">
+                <Col>
+                    <Card className="d-flex flex-column align-items-center login">
                     <Row>
                         <h1 className="text-center">Информация о пользователе</h1>
                         <Col>
                             <Form.Label htmlFor="basic-url">Имя</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url" aria-describedby="basic-addon3" value = {user.firstName} disabled/>
+                                <FormControl id="basic-url" aria-describedby="basic-addon3" placeholder="Ваше имя" value = {user.firstName} disabled/>
                             </InputGroup>
                             <Form.Label htmlFor="basic-url2">Отчетство</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url2" aria-describedby="basic-addon3" t value = {user.middleName} disabled/>
+                                <FormControl id="basic-url2" aria-describedby="basic-addon3" placeholder="Ваше отчество" value = {user.middleName} disabled/>
                             </InputGroup>
                             <Form.Label htmlFor="basic-url2">Возраст</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url2" aria-describedby="basic-addon3" value = {user.age} disabled/>
+                                <FormControl id="basic-url2" aria-describedby="basic-addon3" placeholder="Ваш возраст" value = {user.age} disabled/>
                             </InputGroup>
                         </Col>
                         <Col>
                             <Form.Label htmlFor="basic-url">Фамилия</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url" aria-describedby="basic-addon3" value = {user.lastName} disabled/>
+                                <FormControl id="basic-url" aria-describedby="basic-addon3" placeholder="Ваша фамилия" value = {user.lastName} disabled/>
                             </InputGroup>
                             <Form.Label htmlFor="basic-url4">Город проживания</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url4" aria-describedby="basic-addon3" value = {user.city} disabled/>
+                                <FormControl id="basic-url4" aria-describedby="basic-addon3" placeholder="Ваш город" value = {user.city} disabled/>
                             </InputGroup>
                             <Form.Label htmlFor="basic-url2">Номер телефона</Form.Label>
                             <InputGroup className="mb-3">
-                                <FormControl id="basic-url2" aria-describedby="basic-addon3" value = {user.phone} disabled/>
+                                <FormControl id="basic-url2" aria-describedby="basic-addon3" placeholder="Ваш номер телефона" value = {user.phone} disabled/>
                             </InputGroup>
                         </Col>
                     </Row>
                     <Row>
                         <Button variant="dark" className="justify-content-center" onClick={() => setModalShow(true)}>Редактировать</Button>
                     </Row>
-                    <UpdateModalUser user={user}
+                    <UpdateModalUser
                                                    show={modalShow}
                                                    onHide={() => setModalShow(false)}/>
+                    </Card>
                 </Col>
+            </Row>
+            <Row>
+                <h1 className="text-center">Ваши заявки</h1>
+            </Row>
+            <Row>
+                <h1 className="text-center">Ваши задания</h1>
             </Row>
         </Container>
     )
