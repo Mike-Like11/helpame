@@ -38,6 +38,7 @@ function AddTask(){
             setErrors(newErrors)
         } else {
             try {
+                let token = JSON.parse(localStorage.getItem("user"));
                 const body = {
                     name: form.name,
                     description: form.description,
@@ -49,9 +50,12 @@ function AddTask(){
                     }
                 };
                 console.log(body);
-                // await axios.post("http://localhost:8080/api/user/tasks",
-                //     body);
-                //navigate("/profile")
+                await axios.post("http://localhost:8080/api/user/tasks",
+                    body,{
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }});
+                navigate("/profile")
             } catch (err) {
                 console.error(err.message);
             }

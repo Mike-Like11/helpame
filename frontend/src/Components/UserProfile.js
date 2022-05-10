@@ -15,6 +15,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import validator from "validator";
 import AddReview from "./AddReview";
+import {FullscreenControl, GeolocationControl, Map, Placemark, YMaps, ZoomControl} from "react-yandex-maps";
 function UpdateModalUser(props) {
     const [ form, setForm ] = useState({})
     const [ errors, setErrors ] = useState({})
@@ -254,13 +255,14 @@ const UserProfile = () => {
     const [user, setUser] = useState("");
     const [modalShow, setModalShow] = React.useState(false);
     const [ loading, setLoading] = useState(true)
+    const [tasks, setTasks] = useState([]);
     const navigate = useNavigate();
     const getUser = async () => {
         console.log("dasdsadasd");
         try {
             let token = JSON.parse(localStorage.getItem("user"));
             console.log("dasdsadasd");
-            await axios.get("http://localhost:8080/api/auth/user/info",{
+            await axios.get("http://localhost:8080/api/user/info",{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
@@ -273,8 +275,26 @@ const UserProfile = () => {
             console.error(err.message);
         }
     };
+    const getTasks = async () => {
+        console.log("dasdsadasd");
+        try {
+            let token = JSON.parse(localStorage.getItem("user"));
+            console.log("dasdsadasd");
+            await axios.get("http://localhost:8080/api/user/tasks",{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }}).then((response) => {
+                console.log(response.data);
+                setTasks(response.data);
+            })
+        } catch (err) {
+            console.log("dasdsadasd");
+            console.error(err.message);
+        }
+    };
     useEffect(() => {
         getUser();
+        getTasks();
     }, []);
     return(
         <Container  className="mb-3 mt-3">
@@ -286,7 +306,7 @@ const UserProfile = () => {
                             <Stack gap={1}>
                                 <Row>
                                     <Col>
-                                        <Button variant="info" style={{height: "100%"}}>Создать резюме</Button>
+                                        <Button variant="info" style={{height: "100%"}} onClick={()=>{navigate("/create_cv")}}>Создать резюме</Button>
                                     </Col>
                                     <Col>
                                     <Button variant="dark" onClick={() => navigate("/new_task")}>Создать задание</Button>
@@ -339,8 +359,29 @@ const UserProfile = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                <h1 className="text-center">Ваши заявки</h1>
+            <Row xs={1} md={2} className="g-4">
+                {tasks.map(task => (
+                    <Col>
+                   <Card className="login">
+                       <Card.Header>
+                           <h1>{task.taskInfo.name}</h1>
+                       </Card.Header>
+                       {/*<YMaps style={{width:"50%"}} >*/}
+                       {/*    <Map state={{ center: [task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude], zoom: 9}} width={"100%"}>*/}
+                       {/*        <Placemark geometry={[task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude]} />*/}
+                       {/*        <ZoomControl />*/}
+                       {/*        <FullscreenControl />*/}
+                       {/*        <GeolocationControl />*/}
+                       {/*    </Map>*/}
+                       {/*</YMaps>*/}
+                       
+                       <Card.Footer>
+                           <Button variant="success" className="justify-content-center" onClick={() => setModalShow(true)}>Редактировать</Button>
+                           <Button variant="dark" className="justify-content-center" onClick={() => setModalShow(true)}>Удалить</Button>
+                       </Card.Footer>
+                   </Card>
+                    </Col>
+                ))}
             </Row>
             <Row>
                 <h1 className="text-center">Ваши задания</h1>

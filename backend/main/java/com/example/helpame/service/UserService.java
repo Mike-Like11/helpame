@@ -4,6 +4,7 @@ import com.example.helpame.entity.User;
 import com.example.helpame.repository.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,9 @@ public class UserService {
             return true;
         }
         return false;
+    }
+    public User getCurrentUser(){
+        return findByEmail(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
     }
     public User findByEmail(String email){
         return userRepository.findByEmail(email).get();

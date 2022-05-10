@@ -1,9 +1,26 @@
 .login{
-    background-color: #FFFFE0;
+    background-color: white;
     color: #2A2E34;
     padding: 20px;
     border-radius: 20px;
     -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
     box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+.task{
+    background-color: white;
+    color: #2A2E34;
+    padding: 10px;
+    font-family: 'MyFont3', sans-serif;
+    border-radius: 20px;
+    -webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    -moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+    box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+}
+.header{
+    background-color: white;
+    font-weight: bold;
+    color: #2A2E34;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
 }

@@ -85,7 +85,7 @@ const Login = () => {
                                             <Form.Control.Feedback type='invalid'>{ errors.password }</Form.Control.Feedback>
                                         </Form.Group>
                                     </Row>
-                                    <Button className="btn btn-success" type="submit">Войти</Button>
+                                    <Button className="btn btn-warning" type="submit">Войти</Button>
                                 </Stack>
                             </Form>
                             {/*<p onClick={() => redirectToRegistration()} style={{color:"blue"}}>Зарегистрироваться</p>*/}

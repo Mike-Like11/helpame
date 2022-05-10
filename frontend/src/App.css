@@ -1,6 +1,5 @@
 .App {
-  background-color: #fed053;
-  font-family: 'MyFont2',sans-serif;
+  font-family: 'MyFont3',sans-serif;
   background-size: cover; /* for IE9+, Safari 4.1+, Chrome 3.0+, Firefox 3.6+ */
   -webkit-background-size: cover; /* for Safari 3.0 - 4.0 , Chrome 1.0 - 3.0 */
   -moz-background-size: cover; /* optional for Firefox 3.6 */
@@ -19,7 +18,8 @@ body {
   -moz-background-size: cover; /* optional for Firefox 3.6 */
   -o-background-size: cover; /* for Opera 9.5 */
   padding: 0; /* to remove the default white margin of body */
-  background-color: #fed053;
+  background-color: ghostwhite;
+  font-family: 'MyFont3', sans-serif;
 }
 @font-face {
   font-family: 'MyFont';
@@ -28,4 +28,8 @@ body {
 @font-face {
   font-family: 'MyFont2';
   src:  url(Assets/NeutralFace.otf) format('otf');
+}
+@font-face {
+  font-family: 'MyFont3';
+  src:  url(Assets/VelaSans-Bold.otf) format('otf');
 }
