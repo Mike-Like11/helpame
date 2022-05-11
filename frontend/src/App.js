@@ -8,6 +8,8 @@ import UserProfile from "./Components/UserProfile";
 import AddTask from "./Components/AddTask";
 import ListTasks from "./Components/ListTasks";
 import AddCurriculumVitae from "./Components/AddCurriculumVitae";
+import Workers from "./Components/Workers";
+import WorkerFullInfo from "./Components/WorkerFullInfo";
 function App() {
   return (
       <div className="App">
@@ -17,6 +19,8 @@ function App() {
             <Routes>
               <Route path="/login" element={<Login/>}/>
               <Route path="/tasks" element={<ListTasks/>}/>
+              <Route path="/workers" element={<Workers/>}/>
+              <Route path="/workers/:id" element={<WorkerFullInfo/>}/>
                 <Route path="/create_cv" element={<AddCurriculumVitae/>}/>
               <Route path="/registration" element={<Registration/>}/>
               <Route path="/profile" element={<UserProfile/>}/>

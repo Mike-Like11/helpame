@@ -301,7 +301,7 @@ const UserProfile = () => {
             <Row  className="mb-3 mt-3">
                 <Col>
                     <Card className="d-flex flex-column align-items-center text-center login">
-                        {loading ? <Spinner animation="border" style={{ width: '300', height: '300' }}/> :  <Image src={user.avatarUrl} roundedCircle width={300} height={300}/>}
+                        {loading ? <Spinner animation="border" style={{ width: '200', height: '200' }}/> :  <Image src={user.avatarUrl} roundedCircle width={300} height={300}/>}
                         <Card.Body>
                             <Stack gap={1}>
                                 <Row>

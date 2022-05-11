@@ -46,6 +46,7 @@ public class UserService {
         return findByEmail(String.valueOf(SecurityContextHolder.getContext().getAuthentication().getPrincipal()));
     }
     public User findByEmail(String email){
+        System.out.println(email);
         return userRepository.findByEmail(email).get();
     }
 }

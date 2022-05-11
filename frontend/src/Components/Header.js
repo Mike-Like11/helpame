@@ -60,7 +60,7 @@ function Header(){
                                             background: '#fed053',
                                             borderRadius: '10px'
                                         }
-                                        : { color: '#fed053'}}
+                                        : { color: 'black'}}
                                 ><h3>Личный кабинет</h3></Nav.Link>
                                 <Nav.Link as={NavLink} className="navLink" onClick={()=>{localStorage.clear(); navigate("/login")}} to="/login" style={({ isActive }) =>
                                     isActive
