@@ -11,11 +11,9 @@ const Workers =() =>{
     const getTasks = async () => {
         try {
             await axios.get("http://localhost:8080/api/workers", ).then((response) => {
-                console.log(response.data);
                 setWorkers(response.data);
             })
         } catch (err) {
-            console.log("dasdsadasd");
             console.error(err.message);
         }
     }
@@ -34,7 +32,7 @@ const Workers =() =>{
                             <Form.Control type="text"
                                           placeholder="Введите название"
                                           onChange={ e => {
-                                              console.log(e.target.value)
+
                                           } } />
                         </Form.Group>
                         <Form.Group as={Col} controlId="formGridEmail">
@@ -42,7 +40,7 @@ const Workers =() =>{
                             <Form.Control type="date"
                                           placeholder="Введите название"
                                           onChange={ e => {
-                                              console.log(e.target.value)
+
                                           } } />
                         </Form.Group>
                     </Card>

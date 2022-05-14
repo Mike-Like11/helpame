@@ -35,15 +35,12 @@ function AddCurriculumVitae(){
                     favoriteAnimals: form.favoriteAnimals.split(', ')
                 };
                 let token = JSON.parse(localStorage.getItem("user"));
-                console.log({
-                    workerInfo: body
-                })
                 await axios.post("http://localhost:8080/api/user/worker",
                     body,{
                         headers: {
                             'Authorization': `Bearer ${token}`
                         }});
-                navigate("/tasks")
+                navigate("/")
             } catch (err) {
                 console.error(err.message);
             }

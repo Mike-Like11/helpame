@@ -17,16 +17,35 @@ public class TaskService {
     private TaskRepository taskRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private WorkerService workerService;
 
     public List<Task> getAll(){
         return taskRepository.findAll();
     }
 
     public Task findById(ObjectId id){
-        Optional<Task> Task = taskRepository.findById(id);
-        return Task.get();
+        Optional<Task> task = taskRepository.findById(id);
+        return task.get();
     }
-
+    public Task addWorker(ObjectId id){
+        System.out.println(id);
+        Optional<Task> task = taskRepository.findById(id);
+        if(task.isPresent()){
+            task.get().getWorkerInfoList().add(workerService.getCurrentWorker());
+            return taskRepository.save(task.get());
+        }
+        return null;
+    }
+    public Task chooseWorker(ObjectId id,ObjectId workerId){
+        System.out.println(workerId);
+        Optional<Task> task = taskRepository.findById(id);
+        if(task.isPresent()){
+            task.get().setWorker(workerService.findById(workerId));
+            return taskRepository.save(task.get());
+        }
+        return null;
+    }
     public List<Task> getCurrentTasks(){
         User currentUser = userService.getCurrentUser();
         return taskRepository.findAllByUserInfo(currentUser.getUserInfo());
@@ -40,8 +59,8 @@ public class TaskService {
 
     public Task updateTask(Task task){
 
-        Task Task = taskRepository.findById(task.getId()).orElse(null);
-        if(Task==null) return null;
+        Task task1 = taskRepository.findById(task.getId()).orElse(null);
+        if(task1==null) return null;
         return taskRepository.save(task);
     }
 }

@@ -3,6 +3,7 @@ import axios from "axios";
 import {Card, Col, Container, Form, Image, Row} from "react-bootstrap";
 import ReactStars from "react-rating-stars-component";
 import {useLocation, useParams} from "react-router-dom";
+import {FaTelegram, FaViber, FaWhatsapp} from "react-icons/fa";
 
 const WorkerFullInfo =(props) =>{
     const [ workers, setWorkers ] = useState([])
@@ -14,7 +15,7 @@ const WorkerFullInfo =(props) =>{
             <Row  className="mb-3 mt-3">
                 <Col sm={4}>
                     <Row>
-                    <Card className="task">
+                    <Card className="task p-4">
                         <Image src={worker.personalInfo.avatarUrl} roundedCircle/>
                         <h3 style={{fontWeight: "bold", fontStyle: "italic", textAlign: "center"}}>{worker.personalInfo.firstName+ ' ' + worker.personalInfo.lastName}</h3>
                         <Row className="text-center">
@@ -37,7 +38,7 @@ const WorkerFullInfo =(props) =>{
                     </Card>
                     </Row>
                     <Row>
-                        <Card className="task mt-4">
+                        <Card className="task mt-4 p-4">
                             <Row>
                                 <Col>
                                     <h5>Город:</h5>
@@ -54,42 +55,29 @@ const WorkerFullInfo =(props) =>{
                                     <h5 style={{fontWeight: "bold"}}>{worker.personalInfo.phone}</h5>
                                 </Col>
                             </Row>
-                            {worker.personalInfo.whatsApp &&
-                                <Row>
-                                    <Col>
-                                        <h5>WhatsApp:</h5>
+                            <Row>
+                                {worker.personalInfo.whatsApp &&
+                                    <Col className="justify-content-center">
+                                        <FaWhatsapp color="green" size="50" className="justify-content-center"/>
                                     </Col>
+                                }
+                                {worker.personalInfo.viber &&
                                     <Col>
-                                        <input type="checkbox" checked={worker.personalInfo.whatsApp}></input>
+                                        <FaViber color="purple" size="50"/>
                                     </Col>
-                                </Row>
-                            }
-                            {worker.personalInfo.viber &&
-                                <Row>
+                                }
+                                {worker.personalInfo.telegram &&
                                     <Col>
-                                        <h5>Viber: </h5>
+                                        <FaTelegram color="#0088cc" size="50"/>
                                     </Col>
-                                    <Col>
-                                        <input type="checkbox" checked={worker.personalInfo.viber}></input>
-                                    </Col>
-                                </Row>
-                            }
-                            {worker.personalInfo.telegram &&
-                                <Row>
-                                    <Col>
-                                        <h5>Telegram:</h5>
-                                    </Col>
-                                    <Col>
-                                        <input type="checkbox" checked={worker.personalInfo.telegram}></input>
-                                    </Col>
-                                </Row>
-                            }
+                                }
+                            </Row>
                         </Card>
                     </Row>
                 </Col>
                 <Col sm={8}>
                     <Row className="p-4">
-                        <Card className="task">
+                        <Card className="task p-4">
                             <h2 className="text-center">Информация о работнике</h2>
                             <h4 style={{fontWeight: "bold"}}>Опыт работы</h4>
                             <h5 style={{textAlign: "left"}}>{worker.workerInfo.experience}</h5>

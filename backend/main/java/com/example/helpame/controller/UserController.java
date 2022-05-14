@@ -4,11 +4,10 @@ import com.example.helpame.entity.Task;
 import com.example.helpame.entity.User;
 import com.example.helpame.service.TaskService;
 import com.example.helpame.service.UserService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +28,10 @@ public class UserController {
     @GetMapping("/user/tasks")
     public List<Task> getUserTask(){
         return taskService.getCurrentTasks();
+    }
+    @PostMapping("/user/tasks/{id}")
+    public Task chooseWorker(@PathVariable ObjectId id,@RequestBody String workerId){
+        System.out.println(id);
+        return taskService.chooseWorker(id,new ObjectId(workerId.substring(0, workerId.length() - 1)));
     }
 }

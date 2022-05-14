@@ -43,10 +43,6 @@ function Registartion(){
                     whatsApp:true,
                     avatar: form.avatar
                 };
-                console.log({
-                    userInfo: body,
-                    avatar: form.avatar
-                })
                 await axios.post("http://localhost:8080/api/auth/register",
                     body,{
                     headers: {

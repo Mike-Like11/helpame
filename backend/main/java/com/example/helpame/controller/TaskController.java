@@ -23,7 +23,10 @@ public class TaskController {
     public Task getTaskById(@PathVariable ObjectId taskId){
         return taskService.findById(taskId);
     }
-
+    @GetMapping("/tasks/{taskId}/respond")
+    public Task getRespond(@PathVariable ObjectId taskId){
+        return taskService.addWorker(taskId);
+    }
     @PostMapping("/user/tasks")
     public Task addTask(@RequestBody TaskInfo taskInput){
         return taskService.addTask(taskInput);

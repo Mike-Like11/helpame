@@ -11,15 +11,6 @@ function Header(){
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link as={NavLink} className="navLink" to="/tasks" style={({ isActive }) =>
-                                isActive
-                                    ? {
-                                        color: '#fff',
-                                        background: '#fed053',
-                                        borderRadius: '10px'
-                                    }
-                                    : { color: 'black'}}
-                            ><h4  style={{fontWeight:"bold", fontFamily:"MyFont3"}}>Задания</h4></Nav.Link>
                             <Nav.Link as={NavLink} className="navLink" to="/workers" style={({ isActive }) =>
                                 isActive
                                     ? {

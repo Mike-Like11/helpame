@@ -3,19 +3,25 @@ import '../Css/Login.css';
 import axios from "axios";
 import avatar from "../Assets/userProfile.png"
 import {
+    Alert,
     Button, Card,
     Col,
     Container,
     Form,
     FormControl, Image,
     InputGroup,
-    Modal,
+    Modal, NavLink,
     Row, Spinner, Stack
 } from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import validator from "validator";
 import AddReview from "./AddReview";
 import {FullscreenControl, GeolocationControl, Map, Placemark, YMaps, ZoomControl} from "react-yandex-maps";
+import ReactStars from "react-rating-stars-component";
+import {FaHouseUser, FaLine, FaPhone, FaTelegram, FaUserCheck, FaUserCircle, FaViber, FaWhatsapp} from "react-icons/fa";
+import {List} from "react-content-loader";
+import MyTasks from "./MyTasks";
+import MyRunningTasks from "./MyRunningTasks";
 function UpdateModalUser(props) {
     const [ form, setForm ] = useState({})
     const [ errors, setErrors ] = useState({})
@@ -93,7 +99,6 @@ function UpdateModalUser(props) {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
-                    console.log(response.data)
                 setForm({
                     city: response.data.userInfo.city,
                     email: response.data.email,
@@ -103,7 +108,6 @@ function UpdateModalUser(props) {
                     middleName: response.data.userInfo.middleName,
                     phone: response.data.userInfo.phone
                 })
-                console.log(form)
             })
         } catch (err) {
             console.error(err.message);
@@ -256,64 +260,64 @@ const UserProfile = () => {
     const [modalShow, setModalShow] = React.useState(false);
     const [ loading, setLoading] = useState(true)
     const [tasks, setTasks] = useState([]);
+    const [worker, setWorker] = useState(null);
     const navigate = useNavigate();
     const getUser = async () => {
-        console.log("dasdsadasd");
         try {
             let token = JSON.parse(localStorage.getItem("user"));
-            console.log("dasdsadasd");
             await axios.get("http://localhost:8080/api/user/info",{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
-                    console.log(response.data);
                 setUser(response.data.userInfo);
                 setLoading(false)
             })
         } catch (err) {
-            console.log("dasdsadasd");
             console.error(err.message);
         }
     };
-    const getTasks = async () => {
-        console.log("dasdsadasd");
+    const getWorker = async () => {
+
         try {
             let token = JSON.parse(localStorage.getItem("user"));
-            console.log("dasdsadasd");
-            await axios.get("http://localhost:8080/api/user/tasks",{
+            await axios.get("http://localhost:8080/api/user/worker",{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
-                console.log(response.data);
-                setTasks(response.data);
+                setWorker(response.data);
             })
         } catch (err) {
-            console.log("dasdsadasd");
-            console.error(err.message);
+
         }
     };
     useEffect(() => {
         getUser();
-        getTasks();
+        getWorker();
     }, []);
     return(
         <Container  className="mb-3 mt-3">
             <Row  className="mb-3 mt-3">
                 <Col>
-                    <Card className="d-flex flex-column align-items-center text-center login">
-                        {loading ? <Spinner animation="border" style={{ width: '200', height: '200' }}/> :  <Image src={user.avatarUrl} roundedCircle width={300} height={300}/>}
+                    <Card className="d-flex flex-column align-items-center text-center login m-4">
+                        {loading ? <Spinner animation="border" className="p-4" style={{ width: '200', height: '200' }}/> :  <Image src={user.avatarUrl} roundedCircle width={200} height={200}/>}
                         <Card.Body>
-                            <Stack gap={1}>
-                                <Row>
-                                    <Col>
-                                        <Button variant="info" style={{height: "100%"}} onClick={()=>{navigate("/create_cv")}}>Создать резюме</Button>
-                                    </Col>
-                                    <Col>
-                                    <Button variant="dark" onClick={() => navigate("/new_task")}>Создать задание</Button>
-                                     </Col>
-                                </Row>
+                            <Col>
+                                    {
+                                        !worker &&
+                                            <Row>
+                                                <Button variant="info"  onClick={()=>{navigate("/create_cv")}}>Создать резюме</Button>
+                                            </Row>
+                                    }
+                                    {
+                                        worker &&
+                                        <Row>
+                                        <Button variant="dark" onClick={() => navigate("/new_task")}>Создать задание</Button>
+                                        </Row>
+                                    }
+                            <Row>
                                 <Button variant="danger">Выйти</Button>
-                            </Stack>
+                            </Row>
+                            </Col>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -359,33 +363,8 @@ const UserProfile = () => {
                     </Card>
                 </Col>
             </Row>
-            <Row xs={1} md={2} className="g-4">
-                {tasks.map(task => (
-                    <Col>
-                   <Card className="login">
-                       <Card.Header>
-                           <h1>{task.taskInfo.name}</h1>
-                       </Card.Header>
-                       {/*<YMaps style={{width:"50%"}} >*/}
-                       {/*    <Map state={{ center: [task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude], zoom: 9}} width={"100%"}>*/}
-                       {/*        <Placemark geometry={[task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude]} />*/}
-                       {/*        <ZoomControl />*/}
-                       {/*        <FullscreenControl />*/}
-                       {/*        <GeolocationControl />*/}
-                       {/*    </Map>*/}
-                       {/*</YMaps>*/}
-                       
-                       <Card.Footer>
-                           <Button variant="success" className="justify-content-center" onClick={() => setModalShow(true)}>Редактировать</Button>
-                           <Button variant="dark" className="justify-content-center" onClick={() => setModalShow(true)}>Удалить</Button>
-                       </Card.Footer>
-                   </Card>
-                    </Col>
-                ))}
-            </Row>
-            <Row>
-                <h1 className="text-center">Ваши задания</h1>
-            </Row>
+            <MyTasks/>
+            <MyRunningTasks/>
         </Container>
     )
 }

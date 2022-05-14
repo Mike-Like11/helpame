@@ -49,7 +49,6 @@ function AddTask(){
                         longitude: form.coordinates[1]
                     }
                 };
-                console.log(body);
                 await axios.post("http://localhost:8080/api/user/tasks",
                     body,{
                         headers: {
@@ -73,20 +72,15 @@ function AddTask(){
         return newErrors
     }
     const getUserInfo = async () => {
-        console.log("dasdsadasd");
         try {
             let token = JSON.parse(localStorage.getItem("user"));
-            console.log("dasdsadasd");
             await axios.get("http://localhost:8080/api/auth/user/info",{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
-                console.log(response.data);
                 setUserInfo(response.data.userInfo);
             })
         } catch (err) {
-            console.log("dasdsadasd");
-            console.error(err.message);
         }
     };
     useEffect(() => {
@@ -182,9 +176,9 @@ function AddTask(){
                                             <Form.Label>Местоположение задания</Form.Label>
                                             <Form.Label style={{color: "red"}}>{errors.coordinates}</Form.Label>
                                             <YMaps style={{width:"100%"}} >
-                                                <Map state={{ center: [55.75, 37.57], zoom: 9}} width={"100%"} onClick={(e)=>{setField('' +
+                                                <Map state={{ center: [55.75, 37.57], zoom: 9}} width={"100%"} onClick={(e)=>{setField(
                                                     'coordinates', e.get("coords"))}}>
-                                                    <Placemark geometry={coordinate} />
+                                                    <Placemark geometry={form.coordinates} />
                                                     <ZoomControl />
                                                     <FullscreenControl />
                                                     <GeolocationControl />

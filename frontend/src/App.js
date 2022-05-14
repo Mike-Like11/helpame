@@ -10,6 +10,7 @@ import ListTasks from "./Components/ListTasks";
 import AddCurriculumVitae from "./Components/AddCurriculumVitae";
 import Workers from "./Components/Workers";
 import WorkerFullInfo from "./Components/WorkerFullInfo";
+import TaskFullInfo from "./Components/TaskFullInfo";
 function App() {
   return (
       <div className="App">
@@ -18,9 +19,10 @@ function App() {
             <Header/>
             <Routes>
               <Route path="/login" element={<Login/>}/>
-              <Route path="/tasks" element={<ListTasks/>}/>
+              <Route path="/" element={<ListTasks/>}/>
               <Route path="/workers" element={<Workers/>}/>
               <Route path="/workers/:id" element={<WorkerFullInfo/>}/>
+              <Route path="/tasks/:id" element={<TaskFullInfo/>}/>
                 <Route path="/create_cv" element={<AddCurriculumVitae/>}/>
               <Route path="/registration" element={<Registration/>}/>
               <Route path="/profile" element={<UserProfile/>}/>

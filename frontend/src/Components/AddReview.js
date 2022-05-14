@@ -30,9 +30,6 @@ function AddReview(props) {
                     text: form.text,
                     rating: form.rating
                 };
-                console.log({
-                    review: body
-                })
                 setForm({})
                 props.onHide()
                 // await axios.post("http://localhost:8080/api/specialists/props.specialist.id/reviews",

@@ -2,10 +2,12 @@ package com.example.helpame.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,9 @@ import java.util.ArrayList;
 public class Worker {
     @Id
     ObjectId id = ObjectId.get();
-    @Transient
+
+    @Field("workerId")
+    @BsonIgnore
     String strId = id.toHexString();
     private WorkerInfo workerInfo;
 
