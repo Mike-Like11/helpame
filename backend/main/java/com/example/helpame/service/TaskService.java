@@ -21,12 +21,15 @@ public class TaskService {
     private WorkerService workerService;
 
     public List<Task> getAll(){
-        return taskRepository.findAll();
+        return taskRepository.findAllFree();
     }
 
     public Task findById(ObjectId id){
         Optional<Task> task = taskRepository.findById(id);
         return task.get();
+    }
+    public void deleteById(ObjectId id){
+        taskRepository.deleteById(id);
     }
     public Task addWorker(ObjectId id){
         System.out.println(id);
@@ -48,12 +51,12 @@ public class TaskService {
     }
     public List<Task> getCurrentTasks(){
         User currentUser = userService.getCurrentUser();
-        return taskRepository.findAllByUserInfo(currentUser.getUserInfo());
+        return taskRepository.findAllByShortUserInfo(currentUser.getShortUserInfo());
     }
 
     public Task addTask(TaskInfo taskInfo){
         User currentUser = userService.getCurrentUser();
-        Task task = new Task(currentUser.getUserInfo(),taskInfo);
+        Task task = new Task(currentUser.getShortUserInfo(),taskInfo);
         return taskRepository.save(task);
     }
 

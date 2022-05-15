@@ -1,11 +1,9 @@
 package com.example.helpame.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -22,12 +20,12 @@ public class Worker {
     String strId = id.toHexString();
     private WorkerInfo workerInfo;
 
-    public Worker(WorkerInfo workerInfo, UserInfo personalInfo) {
+    public Worker(WorkerInfo workerInfo, ShortUserInfo shortUserInfo) {
         this.workerInfo = workerInfo;
-        this.personalInfo = personalInfo;
+        this.shortUserInfo = shortUserInfo;
     }
 
     private Double rating = 0.0;
-    private UserInfo personalInfo;
-    private ArrayList<Review> reviews;
+    private ShortUserInfo shortUserInfo;
+    private ArrayList<Review> reviews = new ArrayList<Review>();
 }

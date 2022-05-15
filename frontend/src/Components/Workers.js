@@ -25,35 +25,17 @@ const Workers =() =>{
         <Container>
             <Row  className="mb-3 mt-3">
                 <Col sm={4}>
-                    <Card className="task">
-                        <h3 style={{fontWeight: "bold", fontStyle: "italic"}}>Поиск заданий</h3>
-                        <Form.Group as={Col} controlId="formGridEmail">
-                            <Form.Label >Название</Form.Label>
-                            <Form.Control type="text"
-                                          placeholder="Введите название"
-                                          onChange={ e => {
 
-                                          } } />
-                        </Form.Group>
-                        <Form.Group as={Col} controlId="formGridEmail">
-                            <Form.Label >Дата выполнения</Form.Label>
-                            <Form.Control type="date"
-                                          placeholder="Введите название"
-                                          onChange={ e => {
-
-                                          } } />
-                        </Form.Group>
-                    </Card>
                 </Col>
                 <Col sm={4}>
                     {workers.map(worker => (
                         <Card className="task" onClick={()=>navigate(`/workers/${worker.strId}`,{state:{worker: worker}})}>
                             <Row xxl>
                                 <Col sm={4}>
-                                    <Image src={worker.personalInfo.avatarUrl} roundedCircle width={100} height={100}/>
+                                    <Image src={worker.shortUserInfo.avatarUrl} roundedCircle width={100} height={100}/>
                                 </Col>
                                 <Col sm={8}>
-                                    <h3 style={{fontWeight: "bold", fontStyle: "italic"}}>{worker.personalInfo.firstName+ ' ' + worker.personalInfo.lastName}</h3>
+                                    <h3 style={{fontWeight: "bold", fontStyle: "italic"}}>{worker.shortUserInfo.firstName+ ' ' + worker.shortUserInfo.lastName}</h3>
                                     <ReactStars
                                         count={5}
                                         size={24}
@@ -66,7 +48,7 @@ const Workers =() =>{
                                     />
                                 </Col>
                             </Row>
-                            <h5 style={{textAlign: "left"}}>{worker.workerInfo.favoriteAnimals}</h5>
+                            <h5 style={{textAlign: "left"}}>{worker.workerInfo.favoriteAnimals.join(', ')}</h5>
                             <Row>
                             </Row>
                         </Card>

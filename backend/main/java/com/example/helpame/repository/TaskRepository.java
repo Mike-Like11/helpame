@@ -1,18 +1,21 @@
 package com.example.helpame.repository;
 
+import com.example.helpame.entity.FullUserInfo;
+import com.example.helpame.entity.ShortUserInfo;
 import com.example.helpame.entity.Task;
-import com.example.helpame.entity.UserInfo;
-import com.example.helpame.service.UserService;
+import com.example.helpame.entity.Worker;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
 @Repository
 public interface TaskRepository extends MongoRepository<Task, ObjectId> {
-    List<Task> findAllByUserInfo(UserInfo userInfo);
+    List<Task> findAllByShortUserInfo(ShortUserInfo shortUserInfo);
+    @Query(value = "{'workerInfoList':?0}")
+    List<Task> findAllWorkerTasks(Worker worker);
+    @Query(value = "{'worker': null}")
+    List<Task> findAllFree();
 }

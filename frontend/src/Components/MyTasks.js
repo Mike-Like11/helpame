@@ -4,6 +4,8 @@ import {FaHouseUser, FaPhone, FaTelegram, FaUserCheck, FaUserCircle, FaViber, Fa
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import UpdateUser from "./UpdateUser";
+import AddReview from "./AddReview";
 
 const MyTasks = () =>{
     const [tasks, setTasks] = useState([]);
@@ -39,7 +41,9 @@ const MyTasks = () =>{
     }, []);
     return(
         <Row>
-            <h1 className="text-center">Ваши задания</h1>
+            {tasks.length > 0 &&
+                <h1 className="text-center">Ваши задания</h1>
+            }
             {tasks.map(task => (
                 <Col>
                     <Row className="login">
@@ -54,8 +58,8 @@ const MyTasks = () =>{
                                         <Card className="task">
                                             <Row>
                                                 <Col sm={3}>
-                                                    <Image src={worker.personalInfo.avatarUrl} roundedCircle width={50}
-                                                           height={50}/>
+                                                    <Image src={worker.shortUserInfo.avatarUrl} roundedCircle width={100}
+                                                           height={100}/>
                                                 </Col>
                                                 <Col sm={5}>
                                                     <u><NavLink
@@ -64,7 +68,7 @@ const MyTasks = () =>{
                                                             fontWeight: "bold",
                                                             fontStyle: "italic",
                                                             color: "black"
-                                                        }}>{worker.personalInfo.firstName + ' ' + worker.personalInfo.lastName}</h5>
+                                                        }}>{worker.shortUserInfo.firstName + ' ' + worker.shortUserInfo.lastName}</h5>
                                                     </NavLink></u>
                                                     <ReactStars
                                                         count={5}
@@ -96,15 +100,7 @@ const MyTasks = () =>{
                                             <FaUserCircle size="40" color="#fed053"/>
                                         </Col>
                                         <Col>
-                                            <h5 style={{fontWeight: "bold"}}>{task.userInfo.firstName+ ' '+ task.userInfo.lastName}</h5>
-                                        </Col>
-                                    </Row>
-                                    <Row className="p-1 align-content-center justify-content-center text-center">
-                                        <Col className="align-content-center justify-content-center">
-                                            <FaHouseUser size="40"/>
-                                        </Col>
-                                        <Col>
-                                            <h5 style={{fontWeight: "bold", color: "red"}}>{task.userInfo.city}</h5>
+                                            <h5 style={{fontWeight: "bold"}}>{task.worker.shortUserInfo.firstName+ ' '+ task.worker.shortUserInfo.lastName}</h5>
                                         </Col>
                                     </Row>
                                     <Row className="p-2 align-content-center justify-content-center text-center">
@@ -112,30 +108,17 @@ const MyTasks = () =>{
                                             <FaPhone  color="#fed053" size="40"/>
                                         </Col>
                                         <Col>
-                                            <h5   style={{fontWeight: "bold"}}>{task.userInfo.phone}</h5>
+                                            <h5   style={{fontWeight: "bold"}}>{task.worker.shortUserInfo.phone}</h5>
                                         </Col>
-                                    </Row>
-                                    <Row className="text-center">
-                                        {task.userInfo.whatsApp &&
-                                            <Col>
-                                                <FaWhatsapp color="green"  size="50" />
-                                            </Col>
-                                        }
-                                        {task.userInfo.viber &&
-                                            <Col>
-                                                <FaViber color="purple" size="50"/>
-                                            </Col>
-                                        }
-                                        {task.userInfo.telegram &&
-                                            <Col>
-                                                <FaTelegram color="#0088cc" className="ms-auto" size="50"/>
-                                            </Col>
-
-                                        }
                                     </Row>
                                 </Card>
                             </Row>
                         }
+                        <AddReview
+                            show={modalShow}
+                            worker={task.worker}
+                            task={task}
+                            onHide={() => {setModalShow(false);getTasks()}}/>
                         <Card.Footer>
                             <Row className="text-center">
                                 {!task.worker &&

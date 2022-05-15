@@ -8,13 +8,53 @@ import { List } from 'react-content-loader'
 
 const ListTasks =() =>{
     const [ tasks, setTasks ] = useState([])
+    const [allTasks, setAllTasks] = useState([])
     const navigate = useNavigate();
+    const [searchName, setSearchName] = useState("");
+    const [searchDate, setSearchDate] = useState("");
+    const [loading, setLoading] = useState(false);
     const getTasks = async () => {
         try {
             await axios.get("http://localhost:8080/api/tasks", ).then((response) => {
                 setTasks(response.data);
+                setAllTasks(response.data)
+                setLoading(true)
             })
         } catch (err) {
+        }
+    }
+    function filterName(name) {
+        if(name === ""){
+            if(searchDate === ""){
+                setTasks(allTasks)
+            }
+            else{
+                setTasks(allTasks.filter(task => task.taskInfo.dateOfPerformance === searchDate))
+            }
+        }
+        else{
+            if(searchDate === ""){
+                setTasks(allTasks.filter(task => task.taskInfo.name.toLowerCase().includes(name.toLowerCase())))
+            }
+            else{
+                setTasks(allTasks.filter(task => task.taskInfo.dateOfPerformance === searchDate && task.taskInfo.name.toLowerCase().includes(name.toLowerCase())))
+            }
+        }
+    }
+    function filterDate(date) {
+        if(date === ""){
+            if(searchName === "") {
+                setTasks(allTasks)
+            }
+            else{
+                setTasks(allTasks.filter(task => task.taskInfo.dateOfPerformance === searchDate && task.taskInfo.name.toLowerCase().includes(searchName.toLowerCase())))
+            }
+        }
+        else{
+            if(searchName === "") {
+                setTasks(allTasks.filter(task => task.taskInfo.dateOfPerformance === date))
+            }
+            setTasks(allTasks.filter(task => task.taskInfo.dateOfPerformance === date && task.taskInfo.name.toLowerCase().includes(searchName.toLowerCase())))
         }
     }
     useEffect(() => {
@@ -32,6 +72,8 @@ const ListTasks =() =>{
                     <Form.Control type="text"
                                   placeholder="Введите название"
                                   onChange={ e => {
+                                      setSearchName(e.target.value)
+                                      filterName(e.target.value)
                                   } } />
                 </Form.Group>
                 </Col>
@@ -41,6 +83,8 @@ const ListTasks =() =>{
                     <Form.Control type="date"
                                   placeholder="Введите название"
                                   onChange={ e => {
+                                      setSearchDate(e.target.value)
+                                      filterDate(e.target.value)
                                   } } />
                 </Form.Group>
                 </Col>
@@ -48,14 +92,14 @@ const ListTasks =() =>{
             </Card>
             </Row>
             <Row  className="mb-3 mt-3 g-2">
-                    {tasks.length < 1 ? <Col><List foregroundColor="white"/> <List foregroundColor="white"/></Col> :
+                    {(tasks.length < 1 && !loading)? <Col><List foregroundColor="white"/> <List foregroundColor="white"/></Col> :
 
                             tasks.map(task => (
                                 <Col>
                                 <Card className="task" onClick={() => navigate(`/tasks/${task.strId}`, {state: {task: task}})}>
                                     <Row xxl>
                                         <Col sm={2}>
-                                            <Image src={task.userInfo.avatarUrl} roundedCircle width={100}
+                                            <Image src={task.shortUserInfo.avatarUrl} roundedCircle width={100}
                                                    height={100}/>
                                         </Col>
                                         <Col sm={6}>
@@ -82,7 +126,7 @@ const ListTasks =() =>{
                                             <p style={{
                                                 fontWeight: "bold",
                                                 fontStyle: "italic"
-                                            }}>{task.userInfo.lastName + ' ' + task.userInfo.firstName}</p>
+                                            }}>{task.shortUserInfo.lastName + ' ' + task.shortUserInfo.firstName}</p>
                                         </Col>
                                         <Col>
                                             <p style={{

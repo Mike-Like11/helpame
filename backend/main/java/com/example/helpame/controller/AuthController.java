@@ -25,9 +25,7 @@ public class AuthController {
     private UserService userService;
     @SneakyThrows
     @PostMapping("/register")
-    User signUp(  @ModelAttribute RegistrationInput userInfo, HttpServletRequest httpServletRequest) {
-        System.out.println(userInfo.toString());
-        System.out.println(httpServletRequest.getParts().size());
+    User signUp(@ModelAttribute RegistrationInput userInfo) {
         return authService.register(userInfo);
     }
     @GetMapping("/user/info")

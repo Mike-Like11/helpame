@@ -23,6 +23,10 @@ public class TaskController {
     public Task getTaskById(@PathVariable ObjectId taskId){
         return taskService.findById(taskId);
     }
+    @DeleteMapping("/tasks/{taskId}")
+    public void deleteTaskById(@PathVariable ObjectId taskId){
+        taskService.deleteById(taskId);
+    }
     @GetMapping("/tasks/{taskId}/respond")
     public Task getRespond(@PathVariable ObjectId taskId){
         return taskService.addWorker(taskId);

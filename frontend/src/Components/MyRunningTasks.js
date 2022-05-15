@@ -14,7 +14,7 @@ const MyTasks = () =>{
     const getTasks = async () => {
         try {
             let token = JSON.parse(localStorage.getItem("user"));
-            await axios.get("http://localhost:8080/api/user/tasks",{
+            await axios.get("http://localhost:8080/api/user/worker/tasks",{
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
@@ -43,13 +43,12 @@ const MyTasks = () =>{
     }, []);
     return(
         <div>
-            {(worker) !== null &&
+            {(worker) !=="" &&
                 <Row className="p-4">
-                    <Col>
-                <h1 className="text-center">Ваши задания</h1>
                     {tasks.length < 1 ? <Col><List foregroundColor="white"/> <List foregroundColor="white"/></Col> :
-
-                tasks.map(task => (
+                        <Col>
+                            <h1 className="text-center">Ваши задания</h1>
+                            {tasks.map(task => (
                 <Card className="task p-4">
                 <Row xxl className="text-center">
                 <Col>
@@ -77,8 +76,8 @@ const MyTasks = () =>{
                 </Card>
                 ))
             }
-                    </Col>
-
+                        </Col>
+                    }
                         {worker &&
                             <Col>
                             <h1 className="text-center">Информация о работнике</h1>

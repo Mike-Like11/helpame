@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 @Data
 @Document("user")
@@ -20,14 +19,17 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private List<String> roles;
-    private UserInfo userInfo;
+    private FullUserInfo fullUserInfo;
+    private ShortUserInfo shortUserInfo;
     public User() {
     }
 
-    public User(UserInfo userInfo,
+    public User(FullUserInfo fullUserInfo,
+                ShortUserInfo shortUserInfo,
                 String email,
                 String password) {
-        this.userInfo = userInfo;
+        this.fullUserInfo = fullUserInfo;
+        this.shortUserInfo = shortUserInfo;
         this.email = email;
         this.password = password;
         roles = new ArrayList<>();

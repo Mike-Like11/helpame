@@ -38,9 +38,9 @@ function Registartion(){
                     phone: form.phone,
                     email: form.email,
                     city: form.city,
-                    telegram: true,
-                    viber: true,
-                    whatsApp:true,
+                    telegram: form.telegram ? form.telegram : false,
+                    viber: form.viber ? form.viber : false,
+                    whatsApp: form.whatsApp ? form.whatsApp : false,
                     avatar: form.avatar
                 };
                 await axios.post("http://localhost:8080/api/auth/register",
@@ -48,8 +48,7 @@ function Registartion(){
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     }
-                    });
-                //navigate("/login")
+                    }).then((response)=>{ navigate("/login")});
             } catch (err) {
                 console.error(err.message);
             }
@@ -74,7 +73,7 @@ function Registartion(){
     }
 
     return (
-    <Container style={{marginTop: '20px'}}>
+    <Container className="mb-4 mt-4">
         <Row className="justify-content-center" md="auto" xs="auto" xl="auto">
             <Col md="auto" xs="auto">
                 <div  className="login">
@@ -173,7 +172,6 @@ function Registartion(){
                                             {errors.phone}
                                         </Form.Control.Feedback>
                                     </Form.Group>
-
                                     <Form.Group as={Col} controlId="validationCustom05">
                                         <Form.Label>Ваш город</Form.Label>
                                         <Form.Control type="text"
@@ -183,6 +181,26 @@ function Registartion(){
                                         <Form.Control.Feedback type="invalid">
                                             {errors.city}
                                         </Form.Control.Feedback>
+                                    </Form.Group>
+                                </Row>
+                                <Row className="mb-2">
+                                    <Form.Label>Отметьте варианты связи с вами</Form.Label>
+                                    <Form.Group as={Col} controlId="formGridEmail">
+                                        <Form.Check
+                                            label="telegram"
+                                            onChange={ e => setField('telegram', e.target.checked) }  />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formGridPassword">
+                                        <Form.Check
+                                            label="whatsApp"
+                                            onChange={ e => setField('whatsApp', e.target.checked) }  />
+                                    </Form.Group>
+
+                                    <Form.Group as={Col} controlId="formGridPassword">
+                                        <Form.Check
+                                            label="viber"
+                                            onChange={ e => setField('viber', e.target.checked) }  />
                                     </Form.Group>
                                 </Row>
                                 <Row className="mb-3">
@@ -197,12 +215,12 @@ function Registartion(){
                                     </Form.Group>
                                 </Row>
                                 {form.avatar && (
-                                    <div>
+                                    <Row>
                                         <img
                                             src={URL.createObjectURL(form.avatar)}
                                             alt="Thumb"
                                         />
-                                    </div>
+                                    </Row>
                                 )}
                                 <Button className="btn btn-success"  type="submit">Создать аккаунт</Button>
                             </Stack>

@@ -2,8 +2,9 @@ package com.example.helpame.service;
 
 
 import com.example.helpame.config.JWTUtil;
+import com.example.helpame.entity.ShortUserInfo;
 import com.example.helpame.entity.User;
-import com.example.helpame.entity.UserInfo;
+import com.example.helpame.entity.FullUserInfo;
 import com.example.helpame.model.LoginInput;
 import com.example.helpame.model.RegistrationInput;
 import com.example.helpame.repository.UserRepository;
@@ -16,7 +17,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.text.MessageFormat;
 import java.util.Optional;
@@ -37,8 +37,9 @@ public class AuthService implements UserDetailsService {
     }
 
     public User register(RegistrationInput user){
-        UserInfo userInfo = new UserInfo(user.getFirstName(),user.getMiddleName(),user.getLastName(),user.getAge(),user.getPhone(), user.getCity(), user.isViber(),user.isTelegram(),user.isWhatsApp(),cloudinaryService.uploadFile(user.getAvatar()));
-        User user2 = new User(userInfo, user.getEmail(), user.getPassword());
+        FullUserInfo fullUserInfo = new FullUserInfo(user.getMiddleName(),user.getAge(), user.getCity(), user.isViber(),user.isTelegram(),user.isWhatsApp());
+        ShortUserInfo shortUserInfo = new ShortUserInfo(user.getFirstName(),user.getLastName(),user.getPhone(),cloudinaryService.uploadFile(user.getAvatar()));
+        User user2 = new User(fullUserInfo,shortUserInfo, user.getEmail(), user.getPassword());
         String cryptedPassword = bCryptPasswordEncoder.encode(user2.getPassword());
         user2.setPassword(cryptedPassword);
         return userRepository.save(user2);

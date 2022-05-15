@@ -78,7 +78,7 @@ function AddTask(){
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }}).then((response) => {
-                setUserInfo(response.data.userInfo);
+                setUserInfo(response.data.shortUserInfo);
             })
         } catch (err) {
         }
@@ -151,16 +151,9 @@ function AddTask(){
                                                     <Form.Label >Имя</Form.Label>
                                                     <Form.Control type="text" value={userInfo.firstName} disabled/>
                                                 </Form.Group>
-                                            </Row>
-                                            <Row className="mb-2">
                                                 <Form.Group as={Col} controlId="formGridEmail">
                                                     <Form.Label >Фамилия</Form.Label>
                                                     <Form.Control type="text" value={userInfo.lastName} disabled/>
-                                                </Form.Group>
-
-                                                <Form.Group as={Col} controlId="formGridPassword">
-                                                    <Form.Label>Отчество</Form.Label>
-                                                    <Form.Control type="text" value={userInfo.middleName} disabled/>
                                                 </Form.Group>
                                             </Row>
                                             <Row className="mb-2">

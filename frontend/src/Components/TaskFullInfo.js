@@ -20,6 +20,7 @@ const TaskFullInfo =(props) =>{
     const task =  useLocation().state.task
     let navigate = useNavigate();
     const [worker, setWorker] = useState(null);
+    const [userFullInfo, setUserFullInfo] = useState(null);
     const handleSubmit = async e => {
         await axios.get(`http://localhost:8080/api/tasks/${task.strId}/respond`, {
             headers: {
@@ -42,13 +43,31 @@ const TaskFullInfo =(props) =>{
             console.error(err.message);
         }
     };
-   useEffect(()=>{getWorker()},[])
+    const getUser = async () => {
+        try {
+            let token = JSON.parse(localStorage.getItem("user"));
+            console.log(task.taskInfo)
+            await axios.post("http://localhost:8080/api/user_full_info",
+                task.shortUserInfo
+            ,{
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+        }
+            ).then((response) => {
+                setUserFullInfo(response.data);
+            })
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
+   useEffect(()=>{getWorker();getUser();},[])
     return(
         <Container>
             <Row  className="mb-3 mt-3">
                 <Col sm={5}>
                     <Row>
-                        <Card className="task">
+                        <Card className="task p-4">
                             <YMaps>
                                 <Map state={{ center: [task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude], zoom: 12}} width={"100%"}>
                                     <Placemark geometry={[task.taskInfo.coordinates.latitude,task.taskInfo.coordinates.longitude]} />
@@ -60,57 +79,63 @@ const TaskFullInfo =(props) =>{
                         </Card>
                     </Row>
                     <Row>
-                        <Card className="task mt-4 p-4">
-                            <Row className="p-1 align-content-center justify-content-center text-center">
-                                <Col className="align-content-center justify-content-center">
-                                    <FaUserCircle size="40" color="#fed053"/>
-                                </Col>
-                                <Col>
-                                    <h5 style={{fontWeight: "bold"}}>{task.userInfo.firstName+ ' '+ task.userInfo.lastName}</h5>
-                                </Col>
-                            </Row>
-                            <Row className="p-1 align-content-center justify-content-center text-center">
-                                <Col className="align-content-center justify-content-center">
-                                    <FaHouseUser size="40"/>
-                                </Col>
-                                <Col>
-                                    <h5 style={{fontWeight: "bold", color: "red"}}>{task.userInfo.city}</h5>
-                                </Col>
-                            </Row>
-                            <Row className="p-2 align-content-center justify-content-center text-center">
-                                <Col>
-                                    <FaPhone  color="#fed053" size="40"/>
-                                </Col>
-                                <Col>
-                                    <h5   style={{fontWeight: "bold"}}>{task.userInfo.phone}</h5>
-                                </Col>
-                            </Row>
-                        <Row className="text-center">
-                                {task.userInfo.whatsApp &&
-                                    <Col>
-                                        <FaWhatsapp color="green"  size="50" />
+                        {worker &&
+                            <Card className="task mt-4 p-4">
+                                <Row className="p-1 align-content-center justify-content-center text-center">
+                                    <Col className="align-content-center justify-content-center">
+                                        <FaUserCircle size="40" color="#fed053"/>
                                     </Col>
-                                }
-                                {task.userInfo.viber &&
                                     <Col>
-                                        <FaViber color="purple" size="50"/>
+                                        <h5 style={{fontWeight: "bold"}}>{task.shortUserInfo.firstName + ' ' + task.shortUserInfo.lastName}</h5>
                                     </Col>
-                                }
-                                {task.userInfo.telegram &&
-                                    <Col>
-                                        <FaTelegram color="#0088cc" className="ms-auto" size="50"/>
-                                    </Col>
+                                </Row>
+                                {userFullInfo &&
+                                    <div>
+                                        <Row className="p-1 align-content-center justify-content-center text-center">
+                                            <Col className="align-content-center justify-content-center">
+                                                <FaHouseUser size="40"/>
+                                            </Col>
+                                            <Col>
+                                                <h5 style={{fontWeight: "bold", color: "red"}}>{userFullInfo.city}</h5>
+                                            </Col>
+                                        </Row>
+                                        <Row className="p-2 align-content-center justify-content-center text-center">
+                                            <Col>
+                                                <FaPhone color="#fed053" size="40"/>
+                                            </Col>
+                                            <Col>
+                                                <h5 style={{fontWeight: "bold"}}>{task.shortUserInfo.phone}</h5>
+                                            </Col>
+                                        </Row>
+                                        <Row className="text-center">
+                                            {userFullInfo.whatsApp &&
+                                                <Col>
+                                                    <FaWhatsapp color="green" size="50"/>
+                                                </Col>
+                                            }
+                                            {userFullInfo.viber &&
+                                                <Col>
+                                                    <FaViber color="purple" size="50"/>
+                                                </Col>
+                                            }
+                                            {userFullInfo.telegram &&
+                                                <Col>
+                                                    <FaTelegram color="#0088cc" className="ms-auto" size="50"/>
+                                                </Col>
 
+                                            }
+                                        </Row>
+                                    </div>
                                 }
-                        </Row>
-                        </Card>
+                            </Card>
+                        }
                     </Row>
                 </Col>
                 <Col>
 
                 </Col>
                 <Col sm={6}>
-                    {worker &&
+
                         <Row>
                             <Card className="task p-4">
                                 <h2 className="text-center">Информация о задании</h2>
@@ -120,12 +145,11 @@ const TaskFullInfo =(props) =>{
                                 <h5 style={{textAlign: "left"}}>{task.taskInfo.description}</h5>
                                 <h4 style={{fontWeight: "bold"}}>Дата выполнения задания</h4>
                                 <h5 style={{textAlign: "left"}}>{task.taskInfo.dateOfPerformance + ' ' + task.taskInfo.timeOfPerformance}</h5>
-                                {(token  && (!task.workerInfoList.includes(worker))) &&
+                                {(token  && (!task.workerInfoList.includes(worker)) && worker) &&
                                     <Button className="btn btn-warning" type="submit" onClick={()=> handleSubmit()}>Откликнуться</Button>
                                 }
                             </Card>
                         </Row>
-                    }
 
                 </Col>
             </Row>

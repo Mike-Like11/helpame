@@ -26,15 +26,26 @@ function AddReview(props) {
             setErrors(newErrors)
         } else {
             try {
+                let token = JSON.parse(localStorage.getItem("user"));
                 const body = {
-                    text: form.text,
+                    message: form.text,
                     rating: form.rating
                 };
                 setForm({})
                 props.onHide()
-                // await axios.post("http://localhost:8080/api/specialists/props.specialist.id/reviews",
-                //     body,);
-                //navigate("/login")
+                await axios.post(`http://localhost:8080/api/workers/${props.worker.strId}`,
+                    body,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }}
+                );
+                await axios.delete(`http://localhost:8080/api/tasks/${props.task.strId}`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }}
+                );
             } catch (err) {
                 console.error(err.message);
             }
