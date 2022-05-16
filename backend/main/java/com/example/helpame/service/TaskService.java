@@ -23,7 +23,9 @@ public class TaskService {
     public List<Task> getAll(){
         return taskRepository.findAllFree();
     }
-
+    public List<Task> getAllAdmin(){
+        return taskRepository.findAll();
+    }
     public Task findById(ObjectId id){
         Optional<Task> task = taskRepository.findById(id);
         return task.get();

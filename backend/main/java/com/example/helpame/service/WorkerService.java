@@ -51,4 +51,10 @@ public class WorkerService {
         User currentUser = userService.getCurrentUser();
         return workerRepository.findByShortUserInfo(currentUser.getShortUserInfo());
     }
+    public Worker updateWorker(Worker worker){
+        return workerRepository.save(worker);
+    }
+    public void deleteWorker(ObjectId id){
+        workerRepository.deleteById(id);
+    }
 }

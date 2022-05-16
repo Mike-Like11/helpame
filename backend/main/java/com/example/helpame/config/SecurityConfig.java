@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000")
+                .allowedOrigins("http://localhost:3000","https://helpame.herokuapp.com")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "PATCH")
                 .allowCredentials(true);
     }
@@ -42,8 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .and()
                 .authorizeHttpRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**").hasRole("USER")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .and()
                 .userDetailsService(uds)
                 .exceptionHandling()
